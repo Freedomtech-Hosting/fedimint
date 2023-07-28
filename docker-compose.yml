@@ -2,7 +2,9 @@ version: '3'
 
 services:
   fedimintd:
-    image: fedimint/fedimintd:master
+    build:
+      context: .
+      dockerfile: fedimintd.dockerfile
     volumes:
       - fedimintd_data:/data
     ports:
@@ -26,7 +28,9 @@ services:
     platform: linux/amd64
 
   guardian-ui:
-    image: fedimintui/guardian-ui:master
+    build:
+      context: .
+      dockerfile: guardian-ui.dockerfile
     ports:
       - '3000'
     labels:
