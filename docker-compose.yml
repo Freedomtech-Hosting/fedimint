@@ -27,7 +27,7 @@ services:
     restart: always
     platform: linux/amd64
 
-  guardian-ui:
+  guardian:
     build:
       context: .
       dockerfile: guardian-ui.dockerfile
