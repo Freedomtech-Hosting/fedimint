@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  fedimintd:
+    image: fedimint/fedimintd:master
+    volumes:
+      - fedimintd_data:/data
+    ports:
+      - '8174'
+      - '8173'
+    labels:
+      lagoon.type: basic-persistent
+      lagoon.persistent: /data
+      lagoon.service.usecomposeports: true
+    environment:
+      - FM_BITCOIN_RPC_KIND=esplora
+      - FM_BITCOIN_RPC_URL=https://mutinynet.com/api/
+      - FM_BITCOIN_NETWORK=signet
+      - FM_BIND_P2P=0.0.0.0:8173
+      - FM_P2P_URL=fedimint://127.0.0.1:8173
+      - FM_BIND_API=0.0.0.0:8174
+      # note: for production environments it's recommended to use a https reverse proxy,
+      # so it will be prefixed by wss:// instead of ws://
+      - FM_API_URL=ws://127.0.0.1:8174
+    restart: always
+    platform: linux/amd64
+
+  guardian-ui:
+    image: fedimintui/guardian-ui:master
+    ports:
+      - '3000'
+    labels:
+      lagoon.type: basic
+      lagoon.service.usecomposeports: true
+    environment:
+      - PORT=3000
+      - REACT_APP_FM_CONFIG_API=ws://127.0.0.1:8174
+    depends_on:
+      - fedimintd
+    restart: always
+    platform: linux/amd64
+
+volumes:
+  fedimintd_data:
+    driver: local
