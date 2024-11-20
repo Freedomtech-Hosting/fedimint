@@ -1,0 +1,32 @@
+tunnel: e8d96d33-0902-44e9-9c31-47b574ee7fd7
+credentials-file: /Users/michael/.cloudflared/e8d96d33-0902-44e9-9c31-47b574ee7fd7.json
+
+ingress:
+  - hostname: guardian1-fedimint1.freedomtech-hosting.org
+    service: http://localhost:18000
+  - hostname: guardian2-fedimint1.freedomtech-hosting.org
+    service: http://localhost:28000
+  - hostname: guardian3-fedimint1.freedomtech-hosting.org
+    service: http://localhost:38000
+  - hostname: guardian4-fedimint1.freedomtech-hosting.org
+    service: http://localhost:48000
+
+  - hostname: api-guardian1-fedimint1.freedomtech-hosting.org
+    service: http://localhost:18174
+  - hostname: api-guardian2-fedimint1.freedomtech-hosting.org
+    service: http://localhost:28174
+  - hostname: api-guardian3-fedimint1.freedomtech-hosting.org
+    service: http://localhost:38174
+  - hostname: api-guardian4-fedimint1.freedomtech-hosting.org
+    service: http://localhost:48174
+
+  - hostname: p2p-guardian1-fedimint1.freedomtech-hosting.org
+    service: tcp://localhost:18173
+  - hostname: p2p-guardian2-fedimint1.freedomtech-hosting.org
+    service: tcp://localhost:28173
+  - hostname: p2p-guardian3-fedimint1.freedomtech-hosting.org
+    service: tcp://localhost:38173
+  - hostname: p2p-guardian4-fedimint1.freedomtech-hosting.org
+    service: tcp://localhost:48173
+
+  - service: http_status:404

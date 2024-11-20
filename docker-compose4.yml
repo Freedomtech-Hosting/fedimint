@@ -1,0 +1,48 @@
+services:
+  fedimintd:
+    build:
+      context: .
+      dockerfile: fedimintd.dockerfile
+    volumes:
+      - fedimintd_data:/data
+    ports:
+      - '48174:8174'
+      - '48173:8173'
+    labels:
+      lagoon.type: basic-persistent
+      lagoon.persistent: /data
+      lagoon.service.usecomposeports: true
+    environment:
+      - FM_BITCOIN_RPC_KIND=esplora
+      - FM_BITCOIN_RPC_URL=https://mutinynet.com/api/
+      - FM_BITCOIN_NETWORK=signet
+      - FM_BIND_P2P=0.0.0.0:8173
+      - FM_P2P_URL=fedimint://5.tcp.ngrok.io:20149
+      - FM_BIND_API=0.0.0.0:8174
+      # note: for production environments it's recommended to use a https reverse proxy,
+      # so it will be prefixed by wss:// instead of ws://
+      - FM_API_URL=wss://api-guardian4-fedimint1.freedomtech-hosting.org:443
+      - RUST_LOG=debug
+    restart: always
+    platform: linux/amd64
+
+  guardian:
+    build:
+      context: .
+      dockerfile: guardian-ui.dockerfile
+    ports:
+      - '48000:3000'
+    labels:
+      lagoon.type: basic
+      lagoon.service.usecomposeports: true
+    environment:
+      - PORT=3000
+      - REACT_APP_FM_CONFIG_API=wss://api-guardian4-fedimint1.freedomtech-hosting.org:443
+    depends_on:
+      - fedimintd
+    restart: always
+    platform: linux/amd64
+
+volumes:
+  fedimintd_data:
+    driver: local
