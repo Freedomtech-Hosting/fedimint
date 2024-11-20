@@ -8,15 +8,15 @@ services:
     volumes:
       - fedimintd_data:/data
     ports:
-      - '8174'
-      - '8173'
+      - '8174:8174'
+      - '8173:8173'
     labels:
       lagoon.type: basic-persistent
       lagoon.persistent: /data
       lagoon.service.usecomposeports: true
     environment:
-      - FM_BITCOIN_RPC_KIND=esplora
-      - FM_BITCOIN_RPC_URL=https://mutinynet.com/api/
+      - FM_DEFAULT_BITCOIND_RPC_KIND=esplora
+      - FM_DEFAULT_BITCOIND_RPC_URL=https://mutinynet.com/api/
       - FM_BITCOIN_NETWORK=signet
       - FM_BIND_P2P=0.0.0.0:8173
       - FM_P2P_URL=fedimint://127.0.0.1:8173
@@ -32,7 +32,7 @@ services:
       context: .
       dockerfile: guardian-ui.dockerfile
     ports:
-      - '3000'
+      - '3000:3000'
     labels:
       lagoon.type: basic
       lagoon.service.usecomposeports: true
